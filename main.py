@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
+from pytube import YouTube
 
 app = Flask(__name__)
 
@@ -20,9 +21,11 @@ def about():
 
 @app.route('/download', methods=['POST'])
 def my_form_post():
-    text = request.form['text']
-    processed_text = text.upper()
-    return processed_text
+    title = request.form['title']
+    url = request.form['url']
+    yt = YouTube(url)
+
+    return send_file(yt, as_attachment=True)
 
 
 if __name__ == "__main__":
